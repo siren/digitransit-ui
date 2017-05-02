@@ -10,7 +10,7 @@ if [ -n "$VISUAL" ]; then
     if [ $RESULT -ne 0 ]; then
       echo "Uploading test images to https://www.dropbox.com/sh/emh3x8h38egy2k1/AAAq_eLYDxJ0AJAwFffoZqH9a?dl=0"
       tar czf gemini-report-$TRAVIS_COMMIT-$VISUAL.tar.gz gemini-report
-      ./dropbox_uploader.sh gemini-report-$TRAVIS_COMMIT-$VISUAL.tar.gz /gemini-report-$TRAVIS_COMMIT-$VISUAL.tar.gz
+      ./test/dropbox_uploader.sh gemini-report-$TRAVIS_COMMIT-$VISUAL.tar.gz /gemini-report-$TRAVIS_COMMIT-$VISUAL.tar.gz
     fi
     exit $RESULT
   else
