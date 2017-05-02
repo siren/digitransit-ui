@@ -20,8 +20,8 @@ if [ -n "$VISUAL" ]; then
 fi
 
 if [ -n "$NWENV" ]; then
-  docker build -t hsldevcom/digitransit-ui:$TRAVIS_COMMIT .
-  docker run -d -e CONFIG=hsl -p 127.0.0.1:8080:8080 hsldevcom/digitransit-ui:$TRAVIS_COMMIT
+  docker build -t hsldevcom/digitransit-ui:ci-$TRAVIS_COMMIT .
+  docker run -d -e CONFIG=hsl -p 127.0.0.1:8080:8080 hsldevcom/digitransit-ui:ci-$TRAVIS_COMMIT
   wget -N http://chromedriver.storage.googleapis.com/2.29/chromedriver_linux64.zip
   unzip chromedriver_linux64.zip
   CHROMEDRIVER=./chromedriver test/flow/script/run-flow-tests.sh
@@ -30,8 +30,8 @@ if [ -n "$NWENV" ]; then
     echo "Pushing to docker"
     if [ "$TRAVIS_BRANCH" = "master" ]; then
       docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_AUTH
-      docker push hsldevcom/digitransit-ui:$TRAVIS_COMMIT
-      docker tag -f hsldevcom/digitransit-ui:$TRAVIS_COMMIT hsldevcom/digitransit-ui:latest
+      docker push hsldevcom/digitransit-ui:ci-$TRAVIS_COMMIT
+      docker tag hsldevcom/digitransit-ui:ci-$TRAVIS_COMMIT hsldevcom/digitransit-ui:latest
       docker push hsldevcom/digitransit-ui:latest
     fi
   fi
