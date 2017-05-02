@@ -31,11 +31,11 @@ if [ -n "$NWENV" ]; then
     if [ "$TRAVIS_BRANCH" = "master" ]; then
       docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_AUTH
       docker push hsldevcom/digitransit-ui:$TRAVIS_COMMIT
-      docker tag tag -f hsldevcom/digitransit-ui:$TRAVIS_COMMIT hsldevcom/digitransit-ui:latest
+      docker tag -f hsldevcom/digitransit-ui:$TRAVIS_COMMIT hsldevcom/digitransit-ui:latest
       docker push hsldevcom/digitransit-ui:latest
     fi
   fi
-  exit RESULT
+  exit $RESULT
 fi
 
 if [ -n "$LINT" ]; then
