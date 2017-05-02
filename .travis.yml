@@ -1,4 +1,7 @@
 sudo: required
+branches:
+  only:
+  - master
 env:
  - LINT=1
  - NWENV=chromedriver,firefox
