@@ -24,8 +24,18 @@ if [ -n "$NWENV" ]; then
   docker run -d -e CONFIG=hsl -p 127.0.0.1:8080:8080 hsldevcom/digitransit-ui:$TRAVIS_COMMIT
   wget -N http://chromedriver.storage.googleapis.com/2.29/chromedriver_linux64.zip
   unzip chromedriver_linux64.zip
-  NOSERVER=1 CHROMEDRIVER=./chromedriver test/flow/script/run-flow-tests.sh
-  exit $?
+  CHROMEDRIVER=./chromedriver test/flow/script/run-flow-tests.sh
+  RESULT=$?
+  if [ $RESULT -eq 0 ]; then
+    echo "Pushing to docker"
+    if [ "$TRAVIS_BRANCH" -eq "master" ]; then
+      docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_AUTH
+      docker push hsldevcom/digitransit-ui:$TRAVIS_COMMIT
+      docker tag tag -f hsldevcom/digitransit-ui:$TRAVIS_COMMIT hsldevcom/digitransit-ui:latest
+      docker push hsldevcom/digitransit-ui:latest
+    fi
+  fi
+  exit RESULT
 fi
 
 if [ -n "$LINT" ]; then
