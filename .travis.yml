@@ -15,7 +15,7 @@ services:
 jobs:
   include:
    - stage: build docker
-     install: true
+     node_js: "6"
      script: test/build.sh
    - stage: test
      env: VISUAL=edge13
