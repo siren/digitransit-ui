@@ -8,10 +8,9 @@ branches:
 cache: yarn
 
 language: node_js
-
+install: true
 services:
   - docker
-
 
 jobs:
   include:
