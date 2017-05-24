@@ -9,6 +9,7 @@ import { durationToString } from '../util/timeUtils';
 import StopCode from './StopCode';
 import LegAgencyInfo from './LegAgencyInfo';
 import IntermediateLeg from './IntermediateLeg';
+import PlatformNumber from './PlatformNumber';
 import ItineraryCircleLine from './ItineraryCircleLine';
 
 class TransitLeg extends React.Component {
@@ -53,9 +54,10 @@ class TransitLeg extends React.Component {
       </span>];
 
     const firstLegClassName = this.props.index === 0 ? ' start' : '';
-    const modeClassName =
+    /* const modeClassName =
       `${this.props.mode.toLowerCase()}${this.props.index === 0 ? ' from' : ''}`;
-
+    */
+    const modeClassName = this.props.mode.toLowerCase();
     const StopInfo = ({ stops, leg, toggleFunction }) => {
       const stopCount = (stops && stops.length) || 0;
       const message = (this.state.showIntermediateStops &&
@@ -69,7 +71,7 @@ class TransitLeg extends React.Component {
         />);
       return (
         <div className="intermediate-stop-info-container">{stopCount === 0 ? <span className="intermediate-stop-no-stops">{message}</span> :
-        <span className="intermediate-stops-link pointer-cursor" onClick={toggleFunction}>
+        <span className="intermediate-stops-link pointer-cursor" onClick={(event) => { event.stopPropagation(); toggleFunction(); }}>
           {message}
         </span>} <span className="intermediate-stops-duration">({durationToString(leg.duration * 1000)})</span></div>);
     };
@@ -106,15 +108,12 @@ class TransitLeg extends React.Component {
       <ItineraryCircleLine index={this.props.index} modeClassName={modeClassName} />
       <div
         onClick={this.props.focusAction}
-        className={`small-10 columns itinerary-instruction-column ${firstLegClassName} ${modeClassName}`}
+        className={`small-9 columns itinerary-instruction-column ${firstLegClassName} ${modeClassName}`}
       >
         <div className="itinerary-leg-first-row">
           <div>{this.props.leg.from.name}{this.stopCode(
             this.props.leg.from.stop && this.props.leg.from.stop.code)}
-            <Icon
-              img="icon-icon_arrow-collapse--right"
-              className="itinerary-leg-first-row__arrow"
-            />
+            <PlatformNumber number={this.props.leg.from.stop.platformCode} short={false} />
           </div>
           <Icon img="icon-icon_search-plus" className="itinerary-search-icon" />
         </div>
